@@ -2,6 +2,7 @@ package com.example.flightbooking.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import java.util.List;
 
 @Entity
 @Data
@@ -15,4 +16,6 @@ public class User {
     private String email;
     private String phoneNumber;
     private String role;
+    @OneToMany(mappedBy = "user")
+    private List<Booking> bookings;
 } 
