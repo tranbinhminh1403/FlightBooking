@@ -2,6 +2,7 @@ package com.example.flightbooking.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -22,4 +23,8 @@ public class Flight {
     private LocalDateTime departureTime;
     private LocalDateTime arrivalTime;
     private String status;
+    private BigDecimal economyPrice;
+    private BigDecimal businessPrice;
+    private BigDecimal firstClassPrice;
+    private int availableSeats;
 } 

@@ -9,6 +9,9 @@ import com.example.flightbooking.dto.FlightTicketDTO;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.math.BigDecimal;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import com.example.flightbooking.service.FlightService;
 
 @RestController
 @RequestMapping("/api/flights")
@@ -16,6 +19,9 @@ public class FlightController {
     
     @Autowired
     private FlightRepository flightRepository;
+    
+    @Autowired
+    private FlightService flightService;
     
     @GetMapping
     public List<Flight> getAllFlights() {
@@ -92,5 +98,27 @@ public class FlightController {
         }
         
         return tickets;
+    }
+
+    // Admin only endpoints
+    @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Flight> createFlight(@RequestBody Flight flight) {
+        Flight newFlight = flightService.saveFlight(flight);
+        return ResponseEntity.ok(newFlight);
+    }
+
+    @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Flight> updateFlight(@PathVariable Long id, @RequestBody Flight flight) {
+        Flight updatedFlight = flightService.updateFlight(id, flight);
+        return ResponseEntity.ok(updatedFlight);
+    }
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> deleteFlight(@PathVariable Long id) {
+        flightService.deleteFlight(id);
+        return ResponseEntity.ok().build();
     }
 } 
